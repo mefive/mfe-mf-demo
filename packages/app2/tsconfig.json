@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "lib": ["es6", "esnext", "dom"],
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": false,
+        "baseUrl": ".",
+        "jsx": "react",
+        "strictNullChecks": true,
+        "allowJs": true,
+        "paths": {
+            "@*": ["./src/*"]
+        }
+    },
+    "exclude": ["node_modules", "i18n", "build"]
+}
