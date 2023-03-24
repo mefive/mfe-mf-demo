@@ -1,4 +1,3 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { ModuleFederationPlugin } = require('webpack').container;
 const TerserPlugin = require('terser-webpack-plugin');
@@ -11,10 +10,11 @@ module.exports = {
     mode: process.env.NODE_ENV || 'development',
     entry: './src/index.ts',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'lib'),
+        filename: 'main.js',
         chunkFilename: '[name].js',
         clean: true,
+        library: 'shared',
     },
     module: {
         rules: [
@@ -44,32 +44,14 @@ module.exports = {
     devServer: {
         open: false,
         hot: true,
-        port: 3001,
+        port: 3003,
         static: {
             directory: path.join(__dirname, 'dist'),
         },
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            // minify: process.env.NODE_ENV === 'production',
-            minify: false,
-        }),
-        new ModuleFederationPlugin({
-            name: 'app1',
-            filename: 'app1RemoteEntry.js',
-            remotes: {
-                shared: 'shared@http://localhost:3003/sharedRemoteEntry.js',
-            },
-            exposes: {
-                './App1': './src/App1',
-            },
-            shared: { ...deps },
-        }),
-    ],
+    plugins: [],
     optimization: {
-        // minimize: process.env.NODE_ENV === 'production',
-        minimize: false,
+        minimize: process.env.NODE_ENV === 'production',
         minimizer: [new TerserPlugin()],
     },
 };

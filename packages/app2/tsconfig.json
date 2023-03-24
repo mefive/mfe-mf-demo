@@ -10,8 +10,8 @@
         "strictNullChecks": true,
         "allowJs": true,
         "paths": {
-            "@*": ["./src/*"]
+            "@*": ["../host/src/*"]
         }
     },
-    "exclude": ["node_modules", "i18n", "build"]
+    "include": ["src"]
 }

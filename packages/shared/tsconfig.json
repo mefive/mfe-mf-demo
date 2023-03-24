@@ -10,7 +10,7 @@
         "strictNullChecks": true,
         "allowJs": true,
         "paths": {
-            "@*": ["../host/src/*"]
+            "@*": ["./src/*"]
         }
     },
     "include": ["src"]

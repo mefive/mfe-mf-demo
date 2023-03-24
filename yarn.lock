@@ -2579,6 +2579,11 @@ braces@^3.0.2, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
+browser-crypto@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/browser-crypto/-/browser-crypto-2.0.2.tgz#ccd0bd42a8bf4d692b6d0ef407421497377af25d"
+  integrity sha512-tszXF76sSj9HnoeABk+CwDF/YsacGZTjN7VfYvbFxcTDfr3adybI6wGZoTF2Veaupux0DYgqAv33wWy6IQ8eLw==
+
 browserslist@^4.14.5, browserslist@^4.21.3, browserslist@^4.21.5:
   version "4.21.5"
   resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.21.5.tgz"
@@ -5422,6 +5427,11 @@ locate-path@^6.0.0:
   integrity sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
   dependencies:
     p-locate "^5.0.0"
+
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
