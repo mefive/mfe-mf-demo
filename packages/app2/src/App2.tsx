@@ -1,13 +1,10 @@
 import { Divider, Table } from 'antd';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import * as shared from '@mfe/shared';
 import './tailwind.css';
 
 const App2: React.FC = () => {
     const routeMatch = useRouteMatch();
-
-    console.log('utils', shared);
 
     return (
         <div className="px-3">

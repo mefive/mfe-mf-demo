@@ -3,6 +3,21 @@ const path = require('path');
 const { ModuleFederationPlugin } = require('webpack').container;
 const TerserPlugin = require('terser-webpack-plugin');
 const deps = require('./package.json').dependencies;
+const _ = require('lodash');
+const { FederatedTypesPlugin } = require('@module-federation/typescript');
+const apps = require('../../apps.json');
+
+const federationConfig = {
+    name: 'app1',
+    filename: 'app1RemoteEntry.js',
+    remotes: {
+        shared: `shared@http://localhost:${apps.shared.port}/sharedRemoteEntry.js`,
+    },
+    exposes: {
+        './App1': './src/App1',
+    },
+    shared: { ..._.omit(deps, '@mfe/shared') },
+};
 
 /**
  * @type {import('webpack').Configuration}
@@ -12,8 +27,9 @@ module.exports = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-        chunkFilename: '[name].js',
+        publicPath: `http://localhost:${apps.app1.port}/`,
+        filename: 'bundle.[contenthash].js',
+        chunkFilename: '[name].[contenthash].js',
         clean: true,
     },
     module: {
@@ -44,7 +60,7 @@ module.exports = {
     devServer: {
         open: false,
         hot: true,
-        port: 3001,
+        port: apps.app1.port,
         static: {
             directory: path.join(__dirname, 'dist'),
         },
@@ -52,23 +68,17 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
-            // minify: process.env.NODE_ENV === 'production',
-            minify: false,
+            minify: process.env.NODE_ENV === 'production',
         }),
-        new ModuleFederationPlugin({
-            name: 'app1',
-            filename: 'app1RemoteEntry.js',
-            remotes: {
-                shared: 'shared@http://localhost:3003/sharedRemoteEntry.js',
-            },
-            exposes: {
-                './App1': './src/App1',
-            },
-            shared: { ...deps },
+        new ModuleFederationPlugin(federationConfig),
+        new FederatedTypesPlugin({
+            federationConfig,
+            disableDownloadingRemoteTypes: process.env.NODE_ENV === 'production',
+            disableTypeCompilation: true,
         }),
     ],
     optimization: {
-        // minimize: process.env.NODE_ENV === 'production',
+        minimize: process.env.NODE_ENV === 'production',
         minimize: false,
         minimizer: [new TerserPlugin()],
     },

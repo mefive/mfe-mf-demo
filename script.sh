@@ -1,0 +1,1 @@
+lerna run start --scope app1 --scope app2 --scope shared

@@ -1,0 +1,6 @@
+{
+    "host": { "port": 3000, "path": "./packages/host/dist" },
+    "app1": { "port": 3001, "path": "./packages/app1/dist" },
+    "app2": { "port": 3002, "path": "./packages/app2/dist" },
+    "shared": { "port": 3003, "path": "./packages/shared/dist" }
+}

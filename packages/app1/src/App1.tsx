@@ -1,20 +1,20 @@
-import { Button, Card, Form, Input, InputNumber, Tabs } from 'antd';
+import { Button, Card, Form, InputNumber } from 'antd';
 import React from 'react';
-import { NavLink, Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import './tailwind.css';
-// utils 使用 module federation 的方式引入 shared/utils
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { randomString } from 'shared/utils';
+import './tailwind.css';
 
 const App1: React.FC = () => {
     const { pathname } = useLocation();
     const routeMatch = useRouteMatch();
-    const history = useHistory();
-    const [number, setNumber] = React.useState<number | null>(20);
+    const [number, setNumber] = React.useState<number>(20);
 
     return (
         <div className="px-3">
             <div className="text-center">
                 <h1 className="text-error">App1 子应用1</h1>
+
+                <h1 className="text-error">当前路径：{pathname}</h1>
 
                 <h3>子应用模块 {routeMatch.path}</h3>
             </div>
@@ -24,7 +24,7 @@ const App1: React.FC = () => {
                     <div>使用 shared/utils 生成</div>
                     <InputNumber
                         value={number}
-                        onChange={value => setNumber(value)}
+                        onChange={value => setNumber(value ?? 0)}
                         addonAfter="位"
                         precision={0}
                         min={1}

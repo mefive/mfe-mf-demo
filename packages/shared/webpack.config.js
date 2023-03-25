@@ -1,26 +1,38 @@
 const path = require('path');
-const { ModuleFederationPlugin } = require('webpack').container;
 const TerserPlugin = require('terser-webpack-plugin');
 const deps = require('./package.json').dependencies;
+const { FederatedTypesPlugin } = require('@module-federation/typescript');
+const { ModuleFederationPlugin } = require('webpack').container;
+const apps = require('../../apps.json');
+
+const federationConfig = {
+    name: 'shared',
+    filename: 'sharedRemoteEntry.js',
+    exposes: {
+        './utils': './src/utils',
+    },
+    shared: { ...deps },
+};
 
 /**
  * @type {import('webpack').Configuration}
  */
 module.exports = {
     mode: process.env.NODE_ENV || 'development',
-    entry: './src/index.ts',
+    entry: './src/index',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-        chunkFilename: '[name].js',
-        clean: true,
+        publicPath: 'auto',
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'babel-loader',
                 exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                    },
+                ],
             },
             {
                 test: /\.(css)$/,
@@ -30,10 +42,6 @@ module.exports = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-            app1: path.resolve(__dirname, 'node_modules/app1/dist/remoteEntry.js'),
-        },
     },
     externals: {
         react: 'React',
@@ -43,21 +51,12 @@ module.exports = {
     devServer: {
         open: false,
         hot: true,
-        port: 3003,
+        port: apps.shared.port,
         static: {
             directory: path.join(__dirname, 'dist'),
         },
     },
-    plugins: [
-        new ModuleFederationPlugin({
-            name: 'shared',
-            filename: 'sharedRemoteEntry.js',
-            exposes: {
-                './utils': './src/utils',
-            },
-            shared: { ...deps },
-        }),
-    ],
+    plugins: [new ModuleFederationPlugin(federationConfig), new FederatedTypesPlugin({ federationConfig })],
     optimization: {
         minimize: process.env.NODE_ENV === 'production',
         minimizer: [new TerserPlugin()],

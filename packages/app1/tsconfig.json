@@ -10,7 +10,8 @@
         "strictNullChecks": true,
         "allowJs": true,
         "paths": {
-            "@*": ["../host/src/*"]
+            "@*": ["../host/src/*"],
+            "*": ["./@mf-types/*"]
         }
     },
     "include": ["src"]

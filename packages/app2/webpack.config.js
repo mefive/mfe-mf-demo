@@ -3,6 +3,7 @@ const path = require('path');
 const { ModuleFederationPlugin } = require('webpack').container;
 const TerserPlugin = require('terser-webpack-plugin');
 const deps = require('./package.json').dependencies;
+const apps = require('../../apps.json');
 
 /**
  * @type {import('webpack').Configuration}
@@ -12,6 +13,7 @@ module.exports = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
+        publicPath: `http://localhost:${apps.app2.port}/`,
         filename: 'bundle.js',
         chunkFilename: '[name].js',
         clean: true,
@@ -40,7 +42,7 @@ module.exports = {
     devServer: {
         open: false,
         hot: true,
-        port: 3002,
+        port: apps.app2.port,
         static: {
             directory: path.join(__dirname, 'dist'),
         },
