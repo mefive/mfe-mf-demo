@@ -27,10 +27,12 @@ module.exports = (_env, { mode }) => ({
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath: `http://localhost:${apps.app1.port}/`,
+        publicPath: 'auto',
         filename: 'app1.[contenthash].js',
         chunkFilename: '[name].[contenthash].js',
-        clean: true,
+        clean: {
+            keep: /@mf-types\//,
+        },
     },
     module: {
         rules: [
@@ -74,7 +76,6 @@ module.exports = (_env, { mode }) => ({
         new FederatedTypesPlugin({
             federationConfig,
             disableDownloadingRemoteTypes: mode === 'production',
-            disableTypeCompilation: true,
         }),
     ],
     optimization: {

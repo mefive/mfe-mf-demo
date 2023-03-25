@@ -5,6 +5,20 @@ const TerserPlugin = require('terser-webpack-plugin');
 const deps = require('../app1/package.json').dependencies;
 const apps = require('../../apps.json');
 const _ = require('lodash');
+const { FederatedTypesPlugin } = require('@module-federation/typescript');
+
+const federationConfig = {
+    name: 'host',
+    filename: 'hostRemoteEntry.js',
+    remotes: {
+        app1: `app1@http://localhost:${apps.app1.port}/app1RemoteEntry.js`,
+        app2: `app2@http://localhost:${apps.app2.port}/app2RemoteEntry.js`,
+    },
+    shared: {
+        ...deps,
+    },
+    // shared: _.omit(deps, ['antd']),
+};
 
 /**
  * @type {import('webpack').Configuration}
@@ -56,17 +70,11 @@ module.exports = (_env, { mode }) => ({
             template: './src/index.html',
             minify: mode === 'production',
         }),
-        new ModuleFederationPlugin({
-            name: 'host',
-            filename: 'hostRemoteEntry.js',
-            remotes: {
-                app1: `app1@http://localhost:${apps.app1.port}/app1RemoteEntry.js`,
-                app2: `app2@http://localhost:${apps.app2.port}/app2RemoteEntry.js`,
-            },
-            shared: {
-                ...deps,
-            },
-            // shared: _.omit(deps, ['antd']),
+        new ModuleFederationPlugin(federationConfig),
+        new FederatedTypesPlugin({
+            federationConfig,
+            disableDownloadingRemoteTypes: mode === 'production',
+            disableTypeCompilation: true,
         }),
     ],
     optimization: {

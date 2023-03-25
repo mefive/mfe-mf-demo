@@ -3,6 +3,10 @@ const http = require('http');
 const apps = require('./apps.json');
 
 Object.values(apps).forEach(app => {
+    if (app.disabled) {
+        return;
+    }
+
     http.createServer((req, res) => {
         return handler(req, res, {
             public: app.path,

@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@module-federation/typescript": "^2.3.0",
+    "clean-webpack-plugin": "^4.0.0",
     "serve": "^14.2.0",
     "serve-handler": "^6.1.5"
   }

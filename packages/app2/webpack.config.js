@@ -4,6 +4,16 @@ const { ModuleFederationPlugin } = require('webpack').container;
 const TerserPlugin = require('terser-webpack-plugin');
 const deps = require('./package.json').dependencies;
 const apps = require('../../apps.json');
+const { FederatedTypesPlugin } = require('@module-federation/typescript');
+
+const federationConfig = {
+    name: 'app2',
+    filename: 'app2RemoteEntry.js',
+    exposes: {
+        './App2': './src/App2',
+    },
+    shared: { ...deps },
+};
 
 /**
  * @type {import('webpack').Configuration}
@@ -13,10 +23,12 @@ module.exports = (_env, { mode }) => ({
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath: `http://localhost:${apps.app2.port}/`,
+        publicPath: 'auto',
         filename: 'app2.[contenthash].js',
         chunkFilename: '[name].[contenthash].js',
-        clean: true,
+        clean: {
+            keep: /@mf-types\//,
+        },
     },
     module: {
         rules: [
@@ -49,13 +61,11 @@ module.exports = (_env, { mode }) => ({
     },
     plugins: [
         new HtmlWebpackPlugin(),
-        new ModuleFederationPlugin({
-            name: 'app2',
-            filename: 'app2RemoteEntry.js',
-            exposes: {
-                './App2': './src/App2',
-            },
-            shared: { ...deps },
+        new ModuleFederationPlugin(federationConfig),
+        new FederatedTypesPlugin({
+            federationConfig,
+            disableDownloadingRemoteTypes: mode === 'production',
+            disableTypeCompilation: false,
         }),
     ],
     optimization: {

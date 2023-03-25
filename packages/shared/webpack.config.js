@@ -26,7 +26,9 @@ module.exports = (_env, { mode }) => {
             path: path.resolve(__dirname, 'dist'),
             filename: 'shared.[contenthash].js',
             chunkFilename: '[name].[contenthash].js',
-            clean: true,
+            clean: {
+                keep: /@mf-types\//,
+            },
         },
         module: {
             rules: [
