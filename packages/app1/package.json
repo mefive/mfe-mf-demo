@@ -14,8 +14,8 @@
         "lib"
     ],
     "scripts": {
-        "start": "NODE_ENV=development webpack-dev-server --config webpack.config.js",
-        "build": "NODE_ENV=production webpack --config webpack.config.js",
+        "start": "webpack serve --mode=development --config webpack.config.js",
+        "build": "webpack --mode=production",
         "serve": "node serve.js"
     },
     "devDependencies": {

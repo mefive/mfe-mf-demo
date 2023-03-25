@@ -4,18 +4,19 @@ const { ModuleFederationPlugin } = require('webpack').container;
 const TerserPlugin = require('terser-webpack-plugin');
 const deps = require('../app1/package.json').dependencies;
 const apps = require('../../apps.json');
+const _ = require('lodash');
 
 /**
  * @type {import('webpack').Configuration}
  */
-module.exports = {
-    mode: process.env.NODE_ENV || 'development',
+module.exports = (_env, { mode }) => ({
+    mode,
     entry: './src/index.ts',
     output: {
         publicPath: `http://localhost:${apps.host.port}/`,
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-        chunkFilename: '[name].js',
+        filename: 'host.[contenthash].js',
+        chunkFilename: '[name].[contenthash].js',
         clean: true,
     },
     externals: {
@@ -41,7 +42,7 @@ module.exports = {
             '@': path.resolve(__dirname, 'src'),
         },
     },
-    devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
+    devtool: mode === 'production' ? false : 'source-map',
     devServer: {
         host: 'localhost',
         allowedHosts: 'all',
@@ -53,8 +54,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
-            // minify: process.env.NODE_ENV === 'production',
-            minify: false,
+            minify: mode === 'production',
         }),
         new ModuleFederationPlugin({
             name: 'host',
@@ -66,11 +66,12 @@ module.exports = {
             shared: {
                 ...deps,
             },
+            // shared: _.omit(deps, ['antd']),
         }),
     ],
     optimization: {
-        // minimize: process.env.NODE_ENV === 'production',
-        minimize: false,
+        minimize: mode === 'production',
         minimizer: [new TerserPlugin()],
+        chunkIds: 'named',
     },
-};
+});

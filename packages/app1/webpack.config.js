@@ -22,13 +22,13 @@ const federationConfig = {
 /**
  * @type {import('webpack').Configuration}
  */
-module.exports = {
-    mode: process.env.NODE_ENV || 'development',
+module.exports = (_env, { mode }) => ({
+    mode,
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         publicPath: `http://localhost:${apps.app1.port}/`,
-        filename: 'bundle.[contenthash].js',
+        filename: 'app1.[contenthash].js',
         chunkFilename: '[name].[contenthash].js',
         clean: true,
     },
@@ -56,7 +56,7 @@ module.exports = {
         react: 'React',
         'react-dom': 'ReactDOM',
     },
-    devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : undefined,
+    devtool: mode === 'development' ? 'inline-source-map' : undefined,
     devServer: {
         open: false,
         hot: true,
@@ -68,18 +68,18 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
-            minify: process.env.NODE_ENV === 'production',
+            minify: mode === 'production',
         }),
         new ModuleFederationPlugin(federationConfig),
         new FederatedTypesPlugin({
             federationConfig,
-            disableDownloadingRemoteTypes: process.env.NODE_ENV === 'production',
+            disableDownloadingRemoteTypes: mode === 'production',
             disableTypeCompilation: true,
         }),
     ],
     optimization: {
-        minimize: process.env.NODE_ENV === 'production',
-        minimize: false,
+        minimize: mode === 'production',
         minimizer: [new TerserPlugin()],
+        chunkIds: 'named',
     },
-};
+});

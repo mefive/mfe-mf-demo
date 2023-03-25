@@ -17,48 +17,58 @@ const federationConfig = {
 /**
  * @type {import('webpack').Configuration}
  */
-module.exports = {
-    mode: process.env.NODE_ENV || 'development',
-    entry: './src/index',
-    output: {
-        publicPath: 'auto',
-    },
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                    },
-                ],
-            },
-            {
-                test: /\.(css)$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader'],
-            },
-        ],
-    },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-    },
-    externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-    },
-    devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : undefined,
-    devServer: {
-        open: false,
-        hot: true,
-        port: apps.shared.port,
-        static: {
-            directory: path.join(__dirname, 'dist'),
+module.exports = (_env, { mode }) => {
+    return {
+        mode,
+        entry: './src/index',
+        output: {
+            publicPath: 'auto',
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'shared.[contenthash].js',
+            chunkFilename: '[name].[contenthash].js',
+            clean: true,
         },
-    },
-    plugins: [new ModuleFederationPlugin(federationConfig), new FederatedTypesPlugin({ federationConfig })],
-    optimization: {
-        minimize: process.env.NODE_ENV === 'production',
-        minimizer: [new TerserPlugin()],
-    },
+        module: {
+            rules: [
+                {
+                    test: /\.tsx?$/,
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                        },
+                    ],
+                },
+                {
+                    test: /\.(css)$/,
+                    use: ['style-loader', 'css-loader', 'postcss-loader'],
+                },
+            ],
+        },
+        resolve: {
+            extensions: ['.tsx', '.ts', '.js'],
+        },
+        externals: {
+            react: 'React',
+            'react-dom': 'ReactDOM',
+        },
+        devtool: mode === 'development' ? 'inline-source-map' : undefined,
+        devServer: {
+            open: false,
+            hot: true,
+            port: apps.shared.port,
+            static: {
+                directory: path.join(__dirname, 'dist'),
+            },
+        },
+        plugins: [
+            new ModuleFederationPlugin(federationConfig),
+            new FederatedTypesPlugin({ federationConfig, disableDownloadingRemoteTypes: true }),
+        ],
+        optimization: {
+            minimize: mode === 'production',
+            minimizer: [new TerserPlugin()],
+            chunkIds: 'named',
+        },
+    };
 };

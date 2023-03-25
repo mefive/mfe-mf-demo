@@ -8,14 +8,14 @@ const apps = require('../../apps.json');
 /**
  * @type {import('webpack').Configuration}
  */
-module.exports = {
-    mode: process.env.NODE_ENV || 'development',
+module.exports = (_env, { mode }) => ({
+    mode,
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         publicPath: `http://localhost:${apps.app2.port}/`,
-        filename: 'bundle.js',
-        chunkFilename: '[name].js',
+        filename: 'app2.[contenthash].js',
+        chunkFilename: '[name].[contenthash].js',
         clean: true,
     },
     module: {
@@ -38,7 +38,7 @@ module.exports = {
         react: 'React',
         'react-dom': 'ReactDOM',
     },
-    devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : undefined,
+    devtool: mode === 'development' ? 'inline-source-map' : undefined,
     devServer: {
         open: false,
         hot: true,
@@ -59,7 +59,8 @@ module.exports = {
         }),
     ],
     optimization: {
-        minimize: process.env.NODE_ENV === 'production',
+        minimize: mode === 'production',
         minimizer: [new TerserPlugin()],
+        chunkIds: 'named',
     },
-};
+});
