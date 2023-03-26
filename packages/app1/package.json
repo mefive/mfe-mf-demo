@@ -33,6 +33,7 @@
         "babel-loader": "^9.1.2",
         "css-loader": "^6.7.3",
         "disable-output-webpack-plugin": "^1.0.1",
+        "dotenv": "^16.0.3",
         "eslint": "^8.36.0",
         "eslint-loader": "^4.0.2",
         "eslint-plugin-import": "^2.27.5",

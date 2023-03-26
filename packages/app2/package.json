@@ -17,7 +17,7 @@
         "start": "webpack serve --mode=development --config-name app",
         "build": "webpack --mode production --config-name app",
         "build:types": "webpack --mode production --config-name types",
-        "serve": "http-server dist -p 3000"
+        "serve": "node serve.js"
     },
     "devDependencies": {
         "@babel/core": "^7.21.3",
@@ -33,6 +33,7 @@
         "babel-loader": "^9.1.2",
         "css-loader": "^6.7.3",
         "disable-output-webpack-plugin": "^1.0.1",
+        "dotenv": "^16.0.3",
         "eslint": "^8.36.0",
         "eslint-loader": "^4.0.2",
         "eslint-plugin-import": "^2.27.5",

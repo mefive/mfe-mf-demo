@@ -23,6 +23,7 @@
     "@module-federation/typescript": "^2.3.0",
     "clean-webpack-plugin": "^4.0.0",
     "disable-output-webpack-plugin": "^1.0.1",
+    "dotenv": "^16.0.3",
     "serve": "^14.2.0",
     "serve-handler": "^6.1.5",
     "webpack-merge": "^5.8.0"

@@ -2,4 +2,4 @@ const path = require('path');
 const serve = require('../../serve');
 const apps = require('../../apps');
 
-serve(path.resolve(__dirname, 'dist'), apps.app1.port);
+serve(path.resolve(__dirname, 'dist'), apps.app2.port);

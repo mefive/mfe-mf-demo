@@ -1,15 +1,10 @@
 const handler = require('serve-handler');
 const http = require('http');
-const apps = require('./apps.json');
 
-Object.values(apps).forEach(app => {
-    if (app.disabled) {
-        return;
-    }
-
+module.exports = function (path, port) {
     http.createServer((req, res) => {
         return handler(req, res, {
-            public: app.path,
+            public: path,
             headers: [
                 {
                     source: '**/*.js',
@@ -32,7 +27,7 @@ Object.values(apps).forEach(app => {
             ],
             rewrites: [{ source: '/*', destination: '/index.html' }],
         });
-    }).listen(app.port, () => {
-        console.log(`Running at http://localhost:${app.port}`);
+    }).listen(port, () => {
+        console.log(`Running at http://localhost:${port}`);
     });
-});
+};

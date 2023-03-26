@@ -5,7 +5,9 @@
         "packages/*"
     ],
     "scripts": {
-        "serve": "node ./serve.js"
+        "build": "lerna run build --parallel",
+        "start": "lerna run start --parallel",
+        "serve": "lerna run serve --parallel"
     },
     "devDependencies": {
         "lerna": "^6.5.1"
