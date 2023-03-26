@@ -1,11 +1,12 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
 const { ModuleFederationPlugin } = require('webpack').container;
-const TerserPlugin = require('terser-webpack-plugin');
+const path = require('path');
 const deps = require('./package.json').dependencies;
 const _ = require('lodash');
 const { FederatedTypesPlugin } = require('@module-federation/typescript');
 const apps = require('../../apps.json');
+const { merge: webpackMerge } = require('webpack-merge');
+const webpackConfig = require('../../webpack.config');
+const DisableOutputWebpackPlugin = require('disable-output-webpack-plugin');
 
 const federationConfig = {
     name: 'app1',
@@ -19,68 +20,43 @@ const federationConfig = {
     shared: { ..._.omit(deps, '@mfe/shared') },
 };
 
-/**
- * @type {import('webpack').Configuration}
- */
-module.exports = (_env, { mode }) => ({
-    mode,
-    entry: './src/index.ts',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: 'auto',
-        filename: 'app1.[contenthash].js',
-        chunkFilename: '[name].[contenthash].js',
-        clean: {
-            keep: /@mf-types\//,
-        },
-    },
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                use: 'babel-loader',
-                exclude: /node_modules/,
+module.exports = (_env, { mode }) => {
+    return [
+        // 构建 app
+        webpackMerge(webpackConfig(mode), {
+            name: 'app',
+            output: {
+                path: path.resolve(__dirname, 'dist'),
             },
-            {
-                test: /\.(css)$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader'],
+            plugins: [
+                new ModuleFederationPlugin(federationConfig),
+                new FederatedTypesPlugin({
+                    federationConfig,
+                    disableDownloadingRemoteTypes: true,
+                    disableTypeCompilation: false,
+                }),
+            ],
+            devServer: {
+                port: apps.app1.port,
             },
-        ],
-    },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-            app1: path.resolve(__dirname, 'node_modules/app1/dist/remoteEntry.js'),
-        },
-    },
-    externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-    },
-    devtool: mode === 'development' ? 'inline-source-map' : undefined,
-    devServer: {
-        open: false,
-        hot: true,
-        port: apps.app1.port,
-        static: {
-            directory: path.join(__dirname, 'dist'),
-        },
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            minify: mode === 'production',
         }),
-        new ModuleFederationPlugin(federationConfig),
-        new FederatedTypesPlugin({
-            federationConfig,
-            disableDownloadingRemoteTypes: mode === 'production',
+
+        // 下载 d.ts
+        webpackMerge(webpackConfig(mode), {
+            name: 'types',
+            output: {
+                path: path.resolve(__dirname, 'dist'),
+                clean: false,
+            },
+            plugins: [
+                new DisableOutputWebpackPlugin(),
+                new ModuleFederationPlugin(federationConfig),
+                new FederatedTypesPlugin({
+                    federationConfig,
+                    disableDownloadingRemoteTypes: false,
+                    disableTypeCompilation: true,
+                }),
+            ],
         }),
-    ],
-    optimization: {
-        minimize: mode === 'production',
-        minimizer: [new TerserPlugin()],
-        chunkIds: 'named',
-    },
-});
+    ];
+};

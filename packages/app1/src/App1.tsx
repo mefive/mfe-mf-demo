@@ -1,6 +1,6 @@
 import { Button, Card, Form, InputNumber } from 'antd';
 import React from 'react';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 import { randomString } from 'shared/utils';
 import './tailwind.css';
 

@@ -14,7 +14,8 @@
     ],
     "scripts": {
         "start": "NODE_ENV=development webpack-dev-server --config webpack.config.js",
-        "build": "webpack --mode production",
+        "build": "webpack --mode production --config-name app",
+        "build:types": "webpack --mode production --config-name types",
         "serve": "serve -s dist -l 3003"
     },
     "devDependencies": {
@@ -30,6 +31,7 @@
         "autoprefixer": "^10.4.14",
         "babel-loader": "^9.1.2",
         "css-loader": "^6.7.3",
+        "disable-output-webpack-plugin": "^1.0.1",
         "eslint": "^8.36.0",
         "eslint-loader": "^4.0.2",
         "eslint-plugin-import": "^2.27.5",
@@ -50,7 +52,8 @@
         "typescript": "^5.0.2",
         "webpack": "^5.76.3",
         "webpack-cli": "^5.0.1",
-        "webpack-dev-server": "^4.13.1"
+        "webpack-dev-server": "^4.13.1",
+        "webpack-merge": "^5.8.0"
     },
     "dependencies": {
         "antd": "^5.3.2",
