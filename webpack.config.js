@@ -1,6 +1,3 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
-const { ModuleFederationPlugin } = require('webpack').container;
 const TerserPlugin = require('terser-webpack-plugin');
 
 /**
@@ -43,7 +40,7 @@ module.exports = mode => ({
         open: false,
         hot: true,
     },
-    plugins: [new HtmlWebpackPlugin()],
+    plugins: [],
     optimization: {
         minimize: mode === 'production',
         minimizer: [new TerserPlugin()],

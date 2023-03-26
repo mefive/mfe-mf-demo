@@ -6,6 +6,7 @@ const { FederatedTypesPlugin } = require('@module-federation/typescript');
 const { merge: webpackMerge } = require('webpack-merge');
 const DisableOutputWebpackPlugin = require('disable-output-webpack-plugin');
 const webpackConfig = require('../../webpack.config');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const federationConfig = {
     name: 'host',
@@ -29,6 +30,9 @@ module.exports = (_env, { mode }) => {
                 path: path.resolve(__dirname, 'dist'),
             },
             plugins: [
+                new HtmlWebpackPlugin({
+                    template: './src/index.html',
+                }),
                 new ModuleFederationPlugin(federationConfig),
                 new FederatedTypesPlugin({
                     federationConfig,
