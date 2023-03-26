@@ -1,4 +1,5 @@
 const { ModuleFederationPlugin } = require('webpack').container;
+const path = require('path');
 const deps = require('./package.json').dependencies;
 const apps = require('../../apps.json');
 const { FederatedTypesPlugin } = require('@module-federation/typescript');
