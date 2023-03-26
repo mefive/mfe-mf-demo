@@ -14,7 +14,7 @@
         "lib"
     ],
     "scripts": {
-        "start": "webpack serve --mode=development --config webpack.config.js",
+        "start": "webpack serve --mode=development --config-name app",
         "build": "webpack --mode production --config-name app",
         "build:types": "webpack --mode production --config-name types",
         "serve": "node serve.js"

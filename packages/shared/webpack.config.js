@@ -33,7 +33,7 @@ module.exports = (_env, { mode }) => {
                 }),
             ],
             devServer: {
-                port: apps.app2.port,
+                port: apps.shared.port,
             },
         }),
 
