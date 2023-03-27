@@ -15,7 +15,7 @@ import { importRemote } from '@module-federation/utilities';
 const Home: React.FC = () => {
     return (
         <div className="text-center">
-            <h1 className="text-primary">基座页面</h1>
+            <h1 className="text-success">动态路由的基座页面</h1>
             <p className="mt-2 text-xl">欢迎首页</p>
         </div>
     );
