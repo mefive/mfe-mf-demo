@@ -1,31 +1,34 @@
 {
-  "name": "config",
-  "version": "0.0.0",
-  "description": "> TODO: description",
-  "author": "liucong <liucong@rigongyi.cn>",
-  "homepage": "",
-  "license": "ISC",
-  "main": "lib/config.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
-  "scripts": {
-    "test": "node ./__tests__/config.test.js"
-  },
-  "dependencies": {
-    "lodash-es": "^4.17.21"
-  },
-  "devDependencies": {
-    "@module-federation/typescript": "^2.3.0",
-    "clean-webpack-plugin": "^4.0.0",
-    "disable-output-webpack-plugin": "^1.0.1",
-    "dotenv": "^16.0.3",
-    "serve": "^14.2.0",
-    "serve-handler": "^6.1.5",
-    "webpack-merge": "^5.8.0"
-  }
+    "name": "config",
+    "version": "0.0.0",
+    "description": "> TODO: description",
+    "author": "liucong <liucong@rigongyi.cn>",
+    "homepage": "",
+    "license": "ISC",
+    "main": "lib/config.js",
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "test": "node ./__tests__/config.test.js",
+        "serve": "node serve.js"
+    },
+    "dependencies": {
+        "@module-federation/utilities": "^1.4.0",
+        "axios": "^1.3.4",
+        "lodash-es": "^4.17.21"
+    },
+    "devDependencies": {
+        "@module-federation/typescript": "^2.3.0",
+        "clean-webpack-plugin": "^4.0.0",
+        "disable-output-webpack-plugin": "^1.0.1",
+        "dotenv": "^16.0.3",
+        "serve": "^14.2.0",
+        "serve-handler": "^6.1.5",
+        "webpack-merge": "^5.8.0"
+    }
 }

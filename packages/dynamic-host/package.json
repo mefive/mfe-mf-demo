@@ -1,11 +1,11 @@
 {
-    "name": "host",
+    "name": "dynamic-host",
     "version": "0.0.0",
     "description": "> TODO: description",
     "author": "liucong <liucong@rigongyi.cn>",
-    "homepage": "",
+    "homepage": "https://github.com/mefive/mfe-mf-demo#readme",
     "license": "ISC",
-    "main": "lib/host.js",
+    "main": "lib/dynamic-host.js",
     "directories": {
         "lib": "lib",
         "test": "__tests__"
@@ -13,11 +13,18 @@
     "files": [
         "lib"
     ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mefive/mfe-mf-demo.git"
+    },
     "scripts": {
         "start": "webpack serve --mode=development --config-name app",
         "build": "webpack --mode production --config-name app",
         "build:types": "webpack --mode production --config-name types",
         "serve": "node serve.js"
+    },
+    "bugs": {
+        "url": "https://github.com/mefive/mfe-mf-demo/issues"
     },
     "devDependencies": {
         "@babel/core": "^7.21.3",

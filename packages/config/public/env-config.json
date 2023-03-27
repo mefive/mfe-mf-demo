@@ -1,0 +1,18 @@
+{
+    "routes": [
+        {
+            "path": "/app1",
+            "scope": "app1",
+            "module": "App1",
+            "remoteEntryFileName": "app1RemoteEntry.js",
+            "url": "http://localhost:3001"
+        },
+        {
+            "path": "/app2",
+            "scope": "app2",
+            "module": "App2",
+            "remoteEntryFileName": "app2RemoteEntry.js",
+            "url": "http://localhost:3002"
+        }
+    ]
+}

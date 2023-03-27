@@ -1,7 +1,7 @@
 const TerserPlugin = require('terser-webpack-plugin');
 
 /**
- * @type {import('webpack').Configuration}
+ * @type {(mode: 'development' | 'production') => import('webpack').Configuration & { devServer?: any }}
  */
 module.exports = mode => ({
     name: 'build',
@@ -39,6 +39,7 @@ module.exports = mode => ({
     devServer: {
         open: false,
         hot: true,
+        historyApiFallback: true,
     },
     plugins: [],
     optimization: {
